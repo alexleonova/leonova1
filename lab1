@@ -237,7 +237,7 @@ namespace ConsoleApp1
 
 
 
-           /* Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine("Кортеж.Задание 4а,b");
             (int a1, string a2, char a3, string a4, ulong a5) name = (17, "avg", 'o', "ops", 15);  // создание кортежа и именование при объявлении
             Console.WriteLine();
@@ -253,7 +253,7 @@ namespace ConsoleApp1
             Console.WriteLine("Распаковка кортежа в переменные.Задание 4d");
 
             var (first, second, thrird, four, five) = name;
-            Console.WriteLine(second);*/
+            Console.WriteLine(second);
 
             // задание 4e
             Console.WriteLine();
