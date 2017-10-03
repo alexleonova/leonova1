@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace ConsoleApp1
 {
     class Program
     {
@@ -15,12 +15,13 @@ namespace ConsoleApplication1
             float b = 4.56f;
             long c = 743353787;
             uint d = 26;
-            Console.WriteLine(a);
-            Console.WriteLine(b);
+            Console.WriteLine("int=" + a);
+            Console.WriteLine("float=" + b);
             Console.WriteLine(c);
             Console.WriteLine(d);
-
             Console.WriteLine("");
+
+
             Console.WriteLine("Приведение.Задание 1b");
             int num1 = 123;
             long num2 = num1;
@@ -57,24 +58,25 @@ namespace ConsoleApplication1
             ushort x6;
             x6 = (ushort)x5;
             Console.WriteLine(x6);
-
             Console.WriteLine("");
+
+
             Console.WriteLine("Упаковка/распаковка.Задание 1c");
             int val = 5;
             object obj = val;
             int QW = (int)obj;
             Console.WriteLine(QW);
-
-
             Console.WriteLine("");
+
+
             Console.WriteLine("Неявно типизированная переменная.Задание 1d");
             var t = 5;
             Console.WriteLine(t);
             var s = "September";
             Console.WriteLine(s);
-
-
             Console.WriteLine("");
+
+
             Console.WriteLine("Nullable переменная.Задание 1e");
             int? y1 = null;
             int? y2 = null;
@@ -83,9 +85,10 @@ namespace ConsoleApplication1
             int? z1 = null;
             int? z2 = 4;
             System.Console.Write(z1 == z2);
+            Console.WriteLine("");
+            Console.WriteLine("");
 
-            Console.WriteLine("");
-            Console.WriteLine("");
+
             Console.WriteLine("Строковые литералы.Задание 2а");
             string string3 = "More than you know";
             string string4 = "More than you know!";
@@ -98,17 +101,31 @@ namespace ConsoleApplication1
 
             Console.WriteLine("");
             Console.WriteLine("Cтроки на основе String.Задание 2b");
-
+            string name = "Emily";
+            string date = "12";
+            string str = "Hello, " + name + ". Today is " + date + ".";
+            System.Console.WriteLine(str);
+            string sr1 = "How are you?";
+            string sr2 = null;
+            Console.WriteLine(sr1);
+            string text = "i am ok thank";
+            string[] words = text.Split(new char[] { ' ' });
+            foreach (string r in words)
+            {
+                Console.WriteLine(r);
+            }
+            Console.WriteLine("");
 
 
             Console.WriteLine("Пустая и null строка.Задание 2c");
             Console.WriteLine("");
-
             string v1 = "";
             Console.WriteLine("The length of '{0}' is {1}.", v1, v1.Length);
             string v2 = null;
             Console.WriteLine("The value of the string is '{0}'", v2);
             Console.WriteLine("");
+
+
 
             Console.WriteLine("Строка на основе StringBuilder.Задание 2d");
 
@@ -123,19 +140,22 @@ namespace ConsoleApplication1
 
             // Задание №3
 
-            // задание 3а
-            int[,] dvmas = { { 1, 2, 3 }, { 4, 5, 6 } };
-            for (int o = 0; o < dvmas.GetLength(0); o++)
+            Console.WriteLine("Двумерный массив , Задание 3a");
+            Console.WriteLine("");
+            int[,] A = new int[4, 5];
+            Random rand = new Random();
+            for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < dvmas.GetLength(1); j++)
+                for (int j = 0; j < 5; j++)
                 {
-                    Console.Write(dvmas[o, j]);
+                    A[i, j] = rand.Next(1, 15);
+                    Console.Write("{0}\t", A[i, j]);
                 }
                 Console.WriteLine();
             }
 
             {
-                Console.WriteLine("Строковый массив: ");
+                Console.WriteLine("Строковый массив (Задание 3b: ");
                 string[] number = new string[10] { "one", "two", "free", "four", "five", "six", "seven", "eight", "nine", "ten" };
                 for (int i = 0; i < 10; i++)
                 {
@@ -170,7 +190,7 @@ namespace ConsoleApplication1
             myArr[3] = new int[5];
 
             // Инициализируем ступенчатый массив
-            for (; w < 2; w++)
+            for (w = 0; w < 2; w++)
             {
                 myArr[0][w] = w;
                 Console.Write("{0}\t", myArr[0][w]);
@@ -199,8 +219,8 @@ namespace ConsoleApplication1
             Console.WriteLine();
 
             Console.WriteLine();
-            Console.WriteLine("Неявно типизированные переменные для хранения массива и строки.Задание 3d");
-         
+            Console.WriteLine("Хранение массива и строки.Задание 3d");
+
             var mass = new[] { 1, 2, 3 };                     // неявная типизация для хранения массива
             foreach (var i1 in mass)
             {
@@ -216,25 +236,24 @@ namespace ConsoleApplication1
             Console.WriteLine();
 
 
-            
-            Console.WriteLine();
-            Console.WriteLine("Создание кортежа и именование при объявлении.Задание 4а,b");
-                           
-            (int a1, string a2, char a3, string a4, ulong a5) name= (17, "avg", 'o', "ops", 15);  // создание кортежа и именование при объявлении
 
-             
+           /* Console.WriteLine();
+            Console.WriteLine("Кортеж.Задание 4а,b");
+            (int a1, string a2, char a3, string a4, ulong a5) name = (17, "avg", 'o', "ops", 15);  // создание кортежа и именование при объявлении
             Console.WriteLine();
+
+
             Console.WriteLine("Задание 4c");
             Console.WriteLine(name.GetType().Name);
             Console.WriteLine($" {name}");                   // вывод кортежа                   
-            Console.WriteLine(name.a1 + " " + name.a3 +  " " + name.a4);         // выборочный вывод
+            Console.WriteLine(name.a1 + " " + name.a3 + " " + name.a4);         // выборочный вывод
 
 
             Console.WriteLine();
             Console.WriteLine("Распаковка кортежа в переменные.Задание 4d");
 
-            var (first, second, thrird, four, five ) = name;                                                 
-            Console.WriteLine(second);
+            var (first, second, thrird, four, five) = name;
+            Console.WriteLine(second);*/
 
             // задание 4e
             Console.WriteLine();
@@ -244,35 +263,35 @@ namespace ConsoleApplication1
             Console.WriteLine(t1.Equals(t2));
 
 
+
             // Задание 5             
-             Tuple<double,double,double, char> local_function(double []massiv, string temp)
+            Tuple<double, double, double, char> local_function(double[] massiv, string temp)
             {
                 double min, max;
                 min = max = massiv[0];
-                
-                for( int step=1; step < massiv.Length; step++)
+
+                for (int step = 1; step < massiv.Length; step++)
                 {
-                    if ( massiv[step] < min )
+                    if (massiv[step] < min)
                     {
                         min = massiv[step];
-           
+
                     }
-                    else if ( massiv[step]>max)
+                    else if (massiv[step] > max)
                     {
                         max = massiv[step];
                     }
                 }
                 double sum = min + max;
-                char ch =( (char)temp[0]);
+                char ch = ((char)temp[0]);
                 return Tuple.Create<double, double, double, char>(max, min, sum, ch);
             }
             double[] elementi = { 1, 5, 2, 4, 0, 3, 7 };
             var new_tuple = local_function(elementi, "Sasha");
             Console.WriteLine(new_tuple.Item3.ToString());
-         
-   
+
+
             Console.ReadLine();
         }
-
     }
 }
