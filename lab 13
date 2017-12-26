@@ -1,0 +1,235 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Reflection;
+using System.IO;
+using System.IO.Compression;
+
+
+namespace ConsoleApp13
+{
+    public class DVBLog
+    {
+        public const string path = @"DVBlog.txt";
+        public StreamReader freader;
+        public StreamWriter fwriter;
+        public DVBLog()
+        { }
+        public void Read()
+        {
+            StreamReader freader = new StreamReader(path, System.Text.Encoding.Default);
+            string line;
+            while ((line = freader.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+            }
+            freader.Close();
+        }
+        public void Write(object obj)
+        {
+            StreamWriter fwriter = new StreamWriter(path, true, System.Text.Encoding.Default);
+            fwriter.WriteLine("Session's time: {0}, {1}", DateTime.Now, obj + "\nEnd session.\n\n");
+            fwriter.Close();
+
+        }
+        public void Find(string str)
+        {
+            int countSessions = 0;
+            foreach (string line in File.ReadLines(path))
+            {
+                if (line.Contains(str))
+                {
+                    Console.WriteLine(line);
+                }
+                if (line.Contains("Session"))
+                {
+                    countSessions++;
+                }
+            }
+            Console.WriteLine("Session's count: {0}", countSessions);
+        }
+    }
+
+
+    public static class BDVDiskInfo
+    {
+        static DriveInfo[] allDrives;//Предоставляет доступ к сведениям на указанном диске.
+        static BDVDiskInfo()
+        {
+            allDrives = DriveInfo.GetDrives();
+        }
+        public static string FreeSpase()
+        {
+            string n = "";
+            foreach (DriveInfo d in allDrives)
+            {
+                Console.WriteLine("Drive {0}", d.Name);
+
+                if (d.IsReady == true) //Получает значение, указывающее состояние готовности диска.
+                {
+                    Console.WriteLine("  Available space to current user:{0, 15} bytes", d.AvailableFreeSpace);
+                    n = ("Available space to current user" + d.AvailableFreeSpace);
+                }
+            }
+            return n;
+        }
+
+        public static string FileSustemInfo()
+        {
+            string n = "";
+            foreach (DriveInfo d in allDrives)
+            {
+                Console.WriteLine("  Drive type: {0}", d.DriveType);
+                n = ("  Drive type:" + d.DriveType);
+            }
+
+            return n;
+        }
+
+        public static string Disk()
+        {
+            string n = "";
+            foreach (DriveInfo d in allDrives)
+            {
+                Console.WriteLine("Drive {0}", d.Name);
+                if (d.IsReady == true) //Получает значение, указывающее состояние готовности диска.
+                {
+                    Console.WriteLine("  Volume label: {0}", d.VolumeLabel);
+                    Console.WriteLine("  File system: {0}", d.DriveFormat);
+                    Console.WriteLine(
+                        "  Total available space: {0, 15} bytes", d.TotalFreeSpace);
+
+                    Console.WriteLine(
+                        "  Total size of drive:{0, 15} bytes ", d.TotalSize);
+                    n = ("Inform" + d.VolumeLabel + d.DriveFormat + d.TotalFreeSpace + d.TotalSize);
+                }
+            }
+            return n;
+        }
+    }
+
+    public class DVBFileInfo
+    {
+        public FileInfo file;
+        public DVBFileInfo(string path)
+        {
+            file = new FileInfo(path);
+        }
+        public string GetFullPath()
+        {
+
+            return file.DirectoryName;
+
+        }
+        public string GetFileInfo()
+        {
+            return ("File's name: " + file.Name + ", " +
+                    "File's extension: " + file.Extension + ", " +
+                    "File's length: " + file.Length);
+        }
+        public string GetCreationTime()
+        {
+            return ("File's creation date: " + file.CreationTime);
+        }
+
+    }
+
+
+    public static class DVBDirInfo
+    {
+        public static int countDirs = 0;
+        public static string GetCountSubDirectories(string directory)//количество
+        {
+            string[] dirs = Directory.GetDirectories(directory);
+            int count = 0;
+            foreach (string dir in dirs)
+            {
+                count++;
+            }
+            return ("Directory's count: " + count);
+        }
+        public static string GetCreationTime(string directory)
+        {
+            return Convert.ToString(Directory.GetCreationTime(directory));
+        }
+        public static string GetCountFiles(string directory)
+        {
+            string[] files = Directory.GetFiles(directory);
+            int count = 0;
+            foreach (string file in files)
+            {
+                count++;
+            }
+            return ("File's count in this directory: " + count);
+        }
+        public static string ParentDirectories(string directory)
+        {
+
+            return ("Count of parent's directories: " + countDirs);
+            string dir = Convert.ToString(Directory.CreateDirectory(@"D:\oop13\DVBInspect"));
+        }
+    }
+
+    public static class DVBFileManager
+    {
+        public static void Task(string drive, string user_dir, string user_ex)
+        {
+            string list = (DVBDirInfo.GetCountSubDirectories(drive) + "\n" + DVBDirInfo.GetCountFiles(drive));
+            string dir = Convert.ToString(Directory.CreateDirectory(@"D:\oop13\DVBInspect"));
+            StreamWriter fwriter = new StreamWriter(@"D:\oop13\DVBInspect\dvbdirinfo.txt", true, System.Text.Encoding.Default);
+            fwriter.Write(list);
+            fwriter.Close();
+            FileInfo file = new FileInfo(@"D:\oop13\DVBInspect\dvbdirinfo.txt");
+            if (file.Exists)
+            {
+                file.CopyTo(@"D:\oop13\DVBInspect\dvbdirinfonew.txt", true);
+                file.Delete();
+            }
+
+            string newDir = Convert.ToString(Directory.CreateDirectory(@"D:\oop13\DVBFile"));
+            string[] dirs = Directory.GetFiles(user_dir);
+            for (int i = 0; i < dirs.Length; i++)
+            {
+
+                if (dirs[i].Contains(user_ex))
+                {
+                    string path = dirs[i];
+                    FileInfo fileInf = new FileInfo(path);
+                    if (fileInf.Exists)
+                    {
+                        dirs[i] = dirs[i].Remove(0, 11);
+                        fileInf.MoveTo(@"D:\oop13\DVBFile" + dirs[i]);
+                    }
+                }
+            }
+           
+            string zip = @"D:\oop13\result.zip";
+            string extract = @"D:\oop";
+            
+
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            DVBLog filem = new DVBLog();
+            filem.Write(BDVDiskInfo.FreeSpase());
+            filem.Write(BDVDiskInfo.FileSustemInfo());
+            filem.Write(BDVDiskInfo.Disk());
+            DVBFileInfo file = new DVBFileInfo(@"D:\text.txt");
+            filem.Write(file.GetFullPath());
+            filem.Write(file.GetFileInfo());
+            filem.Write(file.GetCreationTime());
+            filem.Write(DVBDirInfo.ParentDirectories(@"D:\Загрузки"));
+            filem.Write(DVBDirInfo.GetCountSubDirectories(@"D:\Загрузки"));
+            filem.Write(DVBDirInfo.GetCountFiles(@"D:\Загрузки"));
+            filem.Write(DVBDirInfo.GetCreationTime(@"D:\Загрузки"));
+            DVBFileManager.Task(@"D:\", @"D:\Skype", ".txt");
+            filem.Find("18");
+        }
+    }
+}
